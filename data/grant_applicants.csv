@@ -1,0 +1,4 @@
+FirstName,LastName,Phone,MailingPostalCode,Monthly_Income__c,Support_Option__c,Application_Status__c,Grant_Applicant_Phone_Key__c
+Bulk,Applicant One,65 6812 3460,123460,1500,Option One,Submitted,6568123460
+Bulk,Applicant Two,65 6812 3461,123461,1400,Option Two,Submitted,6568123461
+Bulk,Applicant Three,65 6812 3462,123462,2200,Option Three,Submitted,6568123462

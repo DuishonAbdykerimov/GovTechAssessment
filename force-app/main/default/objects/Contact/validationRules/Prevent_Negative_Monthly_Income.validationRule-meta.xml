@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Negative_Monthly_Income</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK(TEXT(Application_Status__c))),
+    NOT(ISBLANK(Monthly_Income__c)),
+    Monthly_Income__c &lt; 0
+)</errorConditionFormula>
+    <errorDisplayField>Monthly_Income__c</errorDisplayField>
+    <errorMessage>Monthly income cannot be negative.</errorMessage>
+</ValidationRule>

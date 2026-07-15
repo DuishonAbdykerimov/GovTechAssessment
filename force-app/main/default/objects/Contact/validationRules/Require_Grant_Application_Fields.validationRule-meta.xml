@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Grant_Application_Fields</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK(TEXT(Application_Status__c))),
+    OR(
+        ISBLANK(FirstName),
+        ISBLANK(LastName),
+        ISBLANK(Phone),
+        ISBLANK(MailingPostalCode),
+        ISBLANK(Monthly_Income__c),
+        ISBLANK(TEXT(Support_Option__c))
+    )
+)</errorConditionFormula>
+    <errorMessage>Complete all required grant application fields before saving.</errorMessage>
+</ValidationRule>

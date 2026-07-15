@@ -1,0 +1,107 @@
+:host {
+    display: block;
+    --portal-primary: #1b4d7a;
+    --portal-primary-dark: #123653;
+    --portal-background: #f4f7fb;
+    --portal-border: #d8e2ec;
+    --portal-success: #2e844a;
+    --portal-error: #ba0517;
+}
+
+.application-shell {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: linear-gradient(180deg, #ffffff 0%, var(--portal-background) 100%);
+    border: 1px solid var(--portal-border);
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(18, 54, 83, 0.12);
+}
+
+.application-header {
+    margin-bottom: 1.75rem;
+    text-align: center;
+}
+
+.application-title {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--portal-primary-dark);
+}
+
+.application-subtitle {
+    max-width: 680px;
+    margin: 0.65rem auto 0;
+    color: #546678;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.form-section {
+    padding: 1.25rem;
+    background: #ffffff;
+    border: 1px solid var(--portal-border);
+    border-radius: 14px;
+}
+
+.section-title {
+    margin-bottom: 1rem;
+    color: var(--portal-primary-dark);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.option-summary {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #eef5fc;
+    border-left: 4px solid var(--portal-primary);
+    border-radius: 8px;
+    color: #24384b;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.75rem;
+}
+
+.submit-button {
+    min-width: 220px;
+}
+
+.message {
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.message-success {
+    color: #194e31;
+    background: #e8f5ec;
+    border: 1px solid #91d5a6;
+}
+
+.message-error {
+    color: #8e030f;
+    background: #fceced;
+    border: 1px solid #f3a6ae;
+}
+
+@media screen and (max-width: 768px) {
+    .application-shell {
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    .application-title {
+        font-size: 1.5rem;
+    }
+
+    .form-section {
+        padding: 0.8rem;
+    }
+}

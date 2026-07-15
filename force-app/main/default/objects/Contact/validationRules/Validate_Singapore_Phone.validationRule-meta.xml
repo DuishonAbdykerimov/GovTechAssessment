@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate_Singapore_Phone</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK(TEXT(Application_Status__c))),
+    NOT(ISBLANK(Phone)),
+    NOT(REGEX(Phone, &quot;^65 [0-9]{4} [0-9]{4}$&quot;))
+)</errorConditionFormula>
+    <errorDisplayField>Phone</errorDisplayField>
+    <errorMessage>Enter a valid Singapore phone number in the format 65 6812 3456.</errorMessage>
+</ValidationRule>

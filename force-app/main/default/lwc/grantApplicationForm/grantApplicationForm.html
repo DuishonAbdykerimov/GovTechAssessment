@@ -1,0 +1,149 @@
+<template>
+    <section class="application-shell">
+        <header class="application-header">
+            <h1 class="application-title">
+                Financial Support Application
+            </h1>
+
+            <p class="application-subtitle">
+                Submit your details to check your eligibility and apply for
+                an available financial support programme.
+            </p>
+        </header>
+
+        <template if:true={isLoading}>
+            <lightning-spinner
+                alternative-text="Submitting application"
+                size="medium">
+            </lightning-spinner>
+        </template>
+
+        <template if:true={successMessage}>
+            <div class="message message-success" role="status">
+                {successMessage}
+            </div>
+        </template>
+
+        <template if:true={errorMessage}>
+            <div class="message message-error" role="alert">
+                {errorMessage}
+            </div>
+        </template>
+
+        <div class="form-section">
+            <h2 class="section-title">Applicant Information</h2>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small">
+
+                    <lightning-input
+                        name="firstName"
+                        label="First Name"
+                        value={firstName}
+                        onchange={handleInputChange}
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small">
+
+                    <lightning-input
+                        name="lastName"
+                        label="Last Name"
+                        value={lastName}
+                        onchange={handleInputChange}
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small">
+
+                    <lightning-input
+                        name="phone"
+                        label="Singapore Phone Number"
+                        value={phone}
+                        onchange={handleInputChange}
+                        placeholder="65 6812 3456"
+                        pattern="65 [0-9]{4} [0-9]{4}"
+                        message-when-pattern-mismatch="Enter a valid Singapore phone number in the format 65 6812 3456."
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small">
+
+                    <lightning-input
+                        name="postalCode"
+                        label="Singapore Postal Code"
+                        value={postalCode}
+                        onchange={handleInputChange}
+                        pattern="[0-9]{6}"
+                        maxlength="6"
+                        message-when-pattern-mismatch="Enter a valid 6-digit Singapore postal code."
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small">
+
+                    <lightning-input
+                        name="monthlyIncome"
+                        type="number"
+                        label="Monthly Income (SGD)"
+                        value={monthlyIncome}
+                        onchange={handleInputChange}
+                        min="0"
+                        step="0.01"
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small">
+
+                    <lightning-combobox
+                        name="supportOption"
+                        label="Support Programme"
+                        value={supportOption}
+                        options={supportOptionChoices}
+                        onchange={handleSupportOptionChange}
+                        required>
+                    </lightning-combobox>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <template if:true={selectedOptionSummary}>
+                <div class="option-summary">
+                    {selectedOptionSummary}
+                </div>
+            </template>
+
+            <div class="form-actions">
+                <lightning-button
+                    class="submit-button"
+                    variant="brand"
+                    label="Submit Application"
+                    onclick={handleSubmit}
+                    disabled={isLoading}>
+                </lightning-button>
+            </div>
+        </div>
+    </section>
+</template>
