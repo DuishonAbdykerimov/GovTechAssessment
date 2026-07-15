@@ -189,3 +189,17 @@ Linux visual baselines on demand and commits them back.
 | `PORTAL_URL`        | Public Experience Cloud form URL                 |
 | `SF_SITE_ID`        | Experience site id                               |
 | `SF_COMMUNITY_PATH` | Community URL path used for authenticated access |
+
+---
+
+<div align="center">
+
+**Author — Duishon Abdykerimov**
+
+QA Automation Engineer
+
+[![GitHub](https://img.shields.io/badge/GitHub-DuishonAbdykerimov-181717?logo=github&logoColor=white)](https://github.com/DuishonAbdykerimov)
+
+<sub>Built with Salesforce · Playwright · Allure · GitHub Actions · Docker</sub>
+
+</div>
