@@ -4,12 +4,12 @@
 Playwright automation framework** built on the Page Object Model, custom
 fixtures, Allure reporting and GitHub Actions CI.
 
-![E2E Tests](https://img.shields.io/badge/E2E_Tests-passing-brightgreen?logo=playwright&logoColor=white)
-![Allure Report](https://img.shields.io/badge/Allure_Report-Live-orange)
-![Playwright](https://img.shields.io/badge/Playwright-1.61-2EAD33?logo=playwright&logoColor=white)
-![Salesforce](https://img.shields.io/badge/Salesforce-Apex_%2B_LWC-00A1E0?logo=salesforce&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-LTS-339933?logo=node.js&logoColor=white)
-![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
+[![E2E Tests](https://github.com/DuishonAbdykerimov/GovTechAssessment/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/DuishonAbdykerimov/GovTechAssessment/actions/workflows/e2e-tests.yml)
+[![Allure Report](https://img.shields.io/badge/Allure_Report-Live-orange)](https://duishonabdykerimov.github.io/GovTechAssessment/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.61-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev)
+[![Salesforce](https://img.shields.io/badge/Salesforce-Apex_%2B_LWC-00A1E0?logo=salesforce&logoColor=white)](https://developer.salesforce.com)
+[![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=githubactions&logoColor=white)](https://github.com/DuishonAbdykerimov/GovTechAssessment/actions)
 
 [Live Allure Report](https://duishonabdykerimov.github.io/GovTechAssessment/) ·
 [E2E Docs](tests/README.md)
@@ -29,17 +29,17 @@ CI/CD, and rich reporting.
 
 ## Key Features
 
-| Area            | Implementation                                                       |
-| --------------- | ------------------------------------------------------------------- |
-| Architecture    | Page Object Model, custom Playwright fixtures, test-data builders    |
-| App platform    | Salesforce Apex services + triggers, LWC UI, validation rules       |
-| Test types      | E2E UI · Eligibility logic · Negative / validation                  |
-| Unit tests      | LWC Jest (component) + Apex test classes                            |
-| Reporting       | Playwright HTML + **Allure** (screenshots, steps, severity, tags)   |
-| Authentication  | One-time Salesforce CLI login → shared `storageState`               |
-| CI/CD           | GitHub Actions → tests → Allure → **GitHub Pages**                  |
-| Config          | `.env` driven — no hardcoded credentials in tests                   |
-| Best practices  | Auto-waiting, role-based locators, parallel-safe, idempotent data   |
+| Area           | Implementation                                                    |
+| -------------- | ----------------------------------------------------------------- |
+| Architecture   | Page Object Model, custom Playwright fixtures, test-data builders |
+| App platform   | Salesforce Apex services + triggers, LWC UI, validation rules     |
+| Test types     | E2E UI · Eligibility logic · Negative / validation                |
+| Unit tests     | LWC Jest (component) + Apex test classes                          |
+| Reporting      | Playwright HTML + **Allure** (screenshots, steps, severity, tags) |
+| Authentication | One-time Salesforce CLI login → shared `storageState`             |
+| CI/CD          | GitHub Actions → tests → Allure → **GitHub Pages**                |
+| Config         | `.env` driven — no hardcoded credentials in tests                 |
+| Best practices | Auto-waiting, role-based locators, parallel-safe, idempotent data |
 
 ## Architecture
 
@@ -107,15 +107,15 @@ npm run allure:serve        # generate + open the Allure report
 
 ## Test coverage (E2E)
 
-| Scenario                                   | Severity | Tags                   |
-| ------------------------------------------ | -------- | ---------------------- |
-| Application form renders all fields        | critical | smoke, ui              |
-| Eligible applicant submits successfully    | blocker  | regression, happy-path |
+| Scenario                                      | Severity | Tags                    |
+| --------------------------------------------- | -------- | ----------------------- |
+| Application form renders all fields           | critical | smoke, ui               |
+| Eligible applicant submits successfully       | blocker  | regression, happy-path  |
 | Applicant above income threshold not eligible | critical | regression, eligibility |
-| Eligible submission with Option Two        | normal   | regression, happy-path |
-| Eligible submission with Option Three      | normal   | regression, happy-path |
-| Invalid Singapore phone number rejected    | normal   | regression, validation |
-| Invalid Singapore postal code rejected     | normal   | regression, validation |
+| Eligible submission with Option Two           | normal   | regression, happy-path  |
+| Eligible submission with Option Three         | normal   | regression, happy-path  |
+| Invalid Singapore phone number rejected       | normal   | regression, validation  |
+| Invalid Singapore postal code rejected        | normal   | regression, validation  |
 
 ## CI/CD
 
@@ -128,9 +128,9 @@ Every push and pull request runs two jobs via **GitHub Actions**
 
 ### Required repository secrets
 
-| Secret              | Description                                            |
-| ------------------- | ----------------------------------------------------- |
-| `SFDX_AUTH_URL`     | `sf org display --verbose` → *Sfdx Auth Url*          |
-| `PORTAL_URL`        | Public Experience Cloud form URL                      |
-| `SF_SITE_ID`        | Experience site id                                    |
-| `SF_COMMUNITY_PATH` | Community URL path used for authenticated access       |
+| Secret              | Description                                      |
+| ------------------- | ------------------------------------------------ |
+| `SFDX_AUTH_URL`     | `sf org display --verbose` → _Sfdx Auth Url_     |
+| `PORTAL_URL`        | Public Experience Cloud form URL                 |
+| `SF_SITE_ID`        | Experience site id                               |
+| `SF_COMMUNITY_PATH` | Community URL path used for authenticated access |
