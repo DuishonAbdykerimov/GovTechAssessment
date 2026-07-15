@@ -24,7 +24,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        # Use `npm install` (not `npm ci`): the lockfile is generated on macOS,
+        # where the native rolldown binding is used, so it omits the wasm
+        # binding's transitive deps (@emnapi/*) that Linux runners require.
+        run: npm install --no-audit --no-fund
 
       - name: Run LWC unit tests
         run: npm run test:unit:coverage
@@ -48,7 +51,10 @@ jobs:
           java-version: 17
 
       - name: Install dependencies
-        run: npm ci
+        # Use `npm install` (not `npm ci`): the lockfile is generated on macOS,
+        # where the native rolldown binding is used, so it omits the wasm
+        # binding's transitive deps (@emnapi/*) that Linux runners require.
+        run: npm install --no-audit --no-fund
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
