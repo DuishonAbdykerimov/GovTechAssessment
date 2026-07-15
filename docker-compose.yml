@@ -1,0 +1,22 @@
+# Run the Playwright E2E suite in a reproducible container.
+#
+# PORTAL_URL / SF_SITE_ID / SF_COMMUNITY_PATH are read from your local .env,
+# while the Salesforce credential is passed in at runtime, e.g.:
+#
+#   export SFDX_AUTH_URL="$(sf org display --verbose --target-org <org> \
+#       --json | python3 -c 'import sys,json;print(json.load(sys.stdin)["result"]["sfdxAuthUrl"])')"
+#   docker compose run --rm e2e
+#
+# Reports land in ./allure-results and ./playwright-report on the host.
+services:
+  e2e:
+    build: .
+    environment:
+      SFDX_AUTH_URL: ${SFDX_AUTH_URL:-}
+      PORTAL_URL: ${PORTAL_URL:-}
+      SF_SITE_ID: ${SF_SITE_ID:-}
+      SF_COMMUNITY_PATH: ${SF_COMMUNITY_PATH:-}
+      CI: "true"
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./playwright-report:/app/playwright-report
