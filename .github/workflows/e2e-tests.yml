@@ -29,12 +29,24 @@ jobs:
         # binding's transitive deps (@emnapi/*) that Linux runners require.
         run: npm install --no-audit --no-fund
 
-      - name: Run LWC unit tests
+      - name: Run LWC unit tests with coverage
         run: npm run test:unit:coverage
 
+      - name: Upload LWC coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lwc-coverage
+          path: coverage
+          retention-days: 30
+
   e2e-tests:
-    name: Playwright E2E Tests
+    name: E2E (${{ matrix.browser }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
     steps:
       - uses: actions/checkout@v4
 
@@ -44,20 +56,11 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Set up Java (required for Allure report)
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
       - name: Install dependencies
-        # Use `npm install` (not `npm ci`): the lockfile is generated on macOS,
-        # where the native rolldown binding is used, so it omits the wasm
-        # binding's transitive deps (@emnapi/*) that Linux runners require.
         run: npm install --no-audit --no-fund
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Install Salesforce CLI
         run: npm install --global @salesforce/cli
@@ -77,12 +80,56 @@ jobs:
           SF_COMMUNITY_PATH=${{ secrets.SF_COMMUNITY_PATH }}
           EOF
 
-      - name: Run Playwright tests
-        id: tests
-        run: npm run test:e2e
+      - name: Run Playwright tests (${{ matrix.browser }})
+        run: npx playwright test --project=${{ matrix.browser }}
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.browser }}
+          path: allure-results
+          retention-days: 7
+
+      - name: Upload Playwright report (${{ matrix.browser }})
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: playwright-report
+          retention-days: 30
+
+  publish-report:
+    name: Publish Allure Report
+    needs: [e2e-tests]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Java (required for Allure report)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Download Allure results from all browsers
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-*
+          path: allure-results
+          merge-multiple: true
 
       - name: Load previous Allure history
-        if: always()
         uses: actions/checkout@v4
         continue-on-error: true
         with:
@@ -90,7 +137,6 @@ jobs:
           path: gh-pages-history
 
       - name: Restore Allure history for trends
-        if: always()
         run: |
           mkdir -p allure-results/history
           if [ -d "gh-pages-history/history" ]; then
@@ -98,19 +144,9 @@ jobs:
           fi
 
       - name: Generate Allure report
-        if: always()
         run: npm run allure:generate
 
-      - name: Upload Playwright report artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
-          retention-days: 30
-
       - name: Upload Allure report artifact
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
@@ -118,13 +154,9 @@ jobs:
           retention-days: 30
 
       - name: Publish Allure report to GitHub Pages
-        if: always() && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: allure-report
           keep_files: false
-
-      - name: Fail job if tests failed
-        if: steps.tests.outcome == 'failure'
-        run: exit 1

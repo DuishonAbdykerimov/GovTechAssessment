@@ -1,0 +1,62 @@
+name: Update Visual Baselines
+
+# Visual snapshots are platform-specific: baselines generated on macOS do not
+# match the Linux CI runner. Run this workflow (Actions -> Update Visual
+# Baselines -> Run workflow) to regenerate the Linux baselines and commit them.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-baselines:
+    name: Regenerate Linux visual baselines
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli
+
+      - name: Authenticate to Salesforce org
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > ./sfdx-auth-url.txt
+          sf org login sfdx-url --sfdx-url-file ./sfdx-auth-url.txt --alias ci-org --set-default
+          rm ./sfdx-auth-url.txt
+
+      - name: Create .env file
+        run: |
+          cat > .env <<EOF
+          PORTAL_URL=${{ secrets.PORTAL_URL }}
+          SF_TARGET_ORG=ci-org
+          SF_SITE_ID=${{ secrets.SF_SITE_ID }}
+          SF_COMMUNITY_PATH=${{ secrets.SF_COMMUNITY_PATH }}
+          EOF
+
+      - name: Regenerate visual snapshots
+        run: npx playwright test --project=visual --update-snapshots
+
+      - name: Commit updated baselines
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/visual
+          if git diff --staged --quiet; then
+            echo "No baseline changes to commit."
+          else
+            git commit -m "test: update Linux visual baselines"
+            git push
+          fi
