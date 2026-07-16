@@ -53,3 +53,4 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
+data/cleanup-backup/
