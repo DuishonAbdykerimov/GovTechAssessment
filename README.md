@@ -184,11 +184,23 @@ Demo URL (dev org):
 
 ## 10. Security model
 
-- Apex classes use `with sharing`.
+- The public Apex controller uses `with sharing`.
+- Guest-facing persistence and disbursement operations are isolated in narrowly scoped `without sharing` service classes.
 - Public entry point is `@AuraEnabled` on `GrantApplicationController` only.
 - Input validated in Apex; DML errors surfaced as `AuraHandledException`.
 - Grant rules on Contact are gated by `Application_Status__c` so ordinary Contacts are untouched.
-- Experience Cloud permissions are configured in the org (no permission set metadata in repo yet).
+- Experience Cloud guest access is documented in `Grant_Portal_Guest_Access.permissionset-meta.xml` and is limited to the required Apex entry point and supporting access.
+- ### Sharing design
+
+`GrantApplicationController` is the only Apex entry point exposed to the LWC and runs `with sharing`.
+
+`GrantApplicationPersistenceService` and `GrantDisbursementService` run `without sharing` only for the narrowly scoped operations required to:
+
+- upsert an applicant by normalized phone External ID;
+- update an applicant previously created by a guest user;
+- create related grant disbursement records.
+
+These service classes are not exposed directly to the Experience Cloud guest user.
 
 Details: [`docs/security.md`](docs/security.md)
 
